@@ -587,5 +587,3 @@ Desenvolvido por Marcelo Lemos Lopes.
 ## 📄 Licença
 
 Este projeto está sob a licença MIT.
-
-Esse README agora está **100% alinhado com a proposta Java + PostgreSQL**, com Spring Boot/JPA como suporte ao desenvolvimento. Também deixei o frontend fora da definição principal do projeto, porque o núcleo do que você descreveu é o **backend + banco + lógica de estudos/repetição**.
