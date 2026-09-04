@@ -1,5 +1,3 @@
-Claro. Vou deixar o README **centrado em Java + PostgreSQL**, sem colocar React ou outras tecnologias como parte obrigatória. Para o backend, vou assumir **Java com Spring Boot**, porque é uma combinação natural para esse tipo de sistema.
-
 # 📚 Study Tracker
 
 Sistema de gerenciamento e acompanhamento de estudos desenvolvido em **Java** com **PostgreSQL**.
