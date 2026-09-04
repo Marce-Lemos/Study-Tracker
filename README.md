@@ -1,144 +1,157 @@
 # 📚 Study Tracker
 
-Sistema de gerenciamento e acompanhamento de estudos desenvolvido em **Java** com **PostgreSQL**.
+> Um sistema para acompanhar, organizar e visualizar sua evolução nos estudos.
 
-O projeto tem como objetivo permitir que o usuário registre sua rotina de estudos, acompanhe sua evolução através de um calendário inspirado no sistema de contribuições do GitHub, organize conteúdos e utilize um sistema de **repetição espaçada** para revisar aquilo que foi estudado.
+O **Study Tracker** é uma aplicação desenvolvida para ajudar estudantes a registrar suas sessões de estudo, acompanhar o tempo dedicado a cada conteúdo, visualizar sua consistência por meio de um calendário inspirado no GitHub e revisar conteúdos utilizando o conceito de **repetição espaçada**.
+
+Além de ser uma aplicação funcional, o projeto está sendo desenvolvido como uma forma prática de aprender e aplicar conceitos de **Java, Spring Boot, PostgreSQL, APIs REST, JPA/Hibernate e arquitetura em camadas**.
 
 ---
 
-## 🎯 Objetivo
+# 🎯 Objetivo
 
-O **Study Tracker** foi pensado para solucionar um problema simples:
-
-> **Como acompanhar o que estou estudando, manter uma rotina e saber quando preciso revisar um conteúdo?**
-
-A aplicação reúne essas funcionalidades em um único sistema.
+A proposta do Study Tracker é transformar o acompanhamento dos estudos em algo simples, visual e organizado.
 
 O usuário poderá:
 
-* 📚 Registrar o que estudou;
-* ⏱️ Registrar quanto tempo estudou;
-* 📝 Fazer anotações;
-* 📅 Visualizar seu histórico de estudos;
-* 📊 Acompanhar sua consistência;
-* 🧠 Revisar conteúdos utilizando repetição espaçada;
-* 🔁 Registrar o resultado de cada revisão.
+- 📖 Registrar sessões de estudo
+- ⏱️ Acompanhar o tempo estudado
+- 📅 Visualizar seu histórico em um calendário
+- 📝 Registrar anotações sobre os conteúdos
+- 🧠 Identificar assuntos que apresentaram dificuldade
+- 🔁 Revisar conteúdos utilizando repetição espaçada
+- 📊 Acompanhar sua evolução
+- 🔥 Construir uma sequência de estudos
 
 ---
 
-# 🚀 Funcionalidades
+# 🏗️ Arquitetura
+
+A aplicação será construída utilizando uma arquitetura em camadas:
+
+```text
+                    STUDY TRACKER
+                         │
+           ┌─────────────┴─────────────┐
+           │                           │
+       Front-end                    Back-end
+           │                           │
+     HTML/CSS/JS                Java + Spring Boot
+                                       │
+                              ┌────────┴────────┐
+                              │                 │
+                       Spring Data JPA     Spring Security
+                              │
+                              │
+                         PostgreSQL
+````
+
+O projeto começará utilizando **HTML, CSS e JavaScript** no frontend.
+
+Não será utilizado React inicialmente, pois o objetivo é manter o primeiro MVP simples e concentrar o aprendizado no backend com Java.
+
+---
+
+# 🧩 Funcionalidades
 
 ## 📖 Registro de estudos
 
-O usuário poderá registrar uma sessão de estudo contendo informações como:
+O usuário poderá registrar uma sessão de estudo informando:
 
 ```text
-Data:       04/09/2026
-Duração:    60 minutos
-
+Data:       03/09/2026
+Duração:    45 minutos
 Matéria:    Java
-Assunto:    Orientação a Objetos
+Assunto:    Classes e objetos
 
-Conteúdo estudado:
-Classes, objetos, métodos e construtores.
+O que estudei?
+[________________________]
 
-Dificuldades:
-Ainda tenho dificuldade com construtores.
+O que achei difícil?
+[________________________]
 ```
 
-Essas informações serão armazenadas no banco de dados PostgreSQL.
+Após o registro, as informações serão armazenadas no PostgreSQL.
 
 ---
 
-## 📅 Histórico de estudos
+## 📝 Conteúdos e anotações
 
-O sistema apresentará um calendário de estudos inspirado no gráfico de contribuições do GitHub.
+Cada conteúdo poderá possuir informações relacionadas ao estudo.
 
 Exemplo:
 
 ```text
-           2026
+03/09/2026
+Java → POO
 
-JAN  FEV  MAR  ABR  MAI  JUN  JUL  AGO  SET
+Hoje aprendi sobre classes,
+objetos e construtores.
 
-⬜ 🟩 🟩 ⬜ 🟨 🟩 🟩 🟩 ⬜
-🟩 🟩 🟩 🟨 🟩 ⬜ 🟩 🟩 🟩
-⬜ 🟩 🟨 🟩 🟩 🟩 🟩 ⬜ 🟩
+Dificuldade:
+
+Construtores ainda estão
+um pouco confusos.
+
+Revisar:
+
+Construtores
 ```
 
-A intensidade do dia será calculada com base no tempo estudado.
-
-```text
-⬜  0 minutos
-
-🟨  1–30 minutos
-
-🟩  31–60 minutos
-
-🟩  61–120 minutos
-
-🟩  120+ minutos
-```
-
-Ao selecionar um dia, será possível visualizar os estudos realizados naquela data.
+Os conteúdos ficarão associados ao usuário e poderão ser utilizados posteriormente pelo sistema de revisão.
 
 ---
 
-# 📝 Anotações
+## 📅 Calendário de estudos
 
-Cada sessão de estudo poderá possuir suas próprias anotações.
+O sistema terá um calendário inspirado no gráfico de contribuições do GitHub.
 
 Exemplo:
 
 ```text
-04/09/2026
+2026
 
-Java
-└── Orientação a Objetos
+Jan  Fev  Mar  Abr  Mai  Jun  Jul  Ago  Set
 
-Tempo estudado:
-1 hora
-
-O que aprendi:
-- Classes
-- Objetos
-- Métodos
-- Construtores
-
-Dificuldades:
-Construtores ainda não estão muito claros.
-
-Observações:
-Preciso revisar esse assunto.
+⬜ 🟩 🟩 🟨 ⬜ 🟩 🟩 🟩 🟩
+🟩 🟩 ⬜ 🟩 🟩 🟨 🟩 ⬜ 🟩
+🟩 🟩 🟩 🟩 ⬜ 🟩 🟩 🟩 ⬜
 ```
 
-As anotações ficarão armazenadas junto aos registros correspondentes.
+A intensidade será baseada no tempo estudado durante o dia:
+
+```text
+⬜ = 0 minutos
+🟨 = 1–30 minutos
+🟩 = 31–60 minutos
+🟩 = 61–120 minutos
+🟩 = 120+ minutos
+```
+
+O objetivo é permitir que o usuário visualize rapidamente sua consistência ao longo do ano.
 
 ---
 
-# 🧠 Repetição espaçada
+## 🔁 Repetição espaçada
 
-O sistema terá um mecanismo de **repetição espaçada** para ajudar na retenção dos conteúdos estudados.
-
-Após estudar determinado assunto, o sistema poderá criar automaticamente uma sequência de revisões.
+O sistema poderá criar revisões automaticamente para conteúdos estudados.
 
 Exemplo:
 
 ```text
-📚 Java — Classes e Objetos
+Java — Classes
 
-Estudado:
-04/09/2026
+📅 Aprendido: 03/09
 
-Revisões:
+🔁 Revisões:
 
-05/09 → 1ª revisão
-07/09 → 2ª revisão
-12/09 → 3ª revisão
-22/09 → 4ª revisão
+04/09 → amanhã
+06/09 → +2 dias
+11/09 → +5 dias
+21/09 → +10 dias
 ```
 
-Durante uma revisão, o usuário informará o quanto conseguiu lembrar:
+Durante uma revisão, o usuário poderá informar o nível de dificuldade:
 
 ```text
 😵 Esqueci
@@ -147,405 +160,315 @@ Durante uma revisão, o usuário informará o quanto conseguiu lembrar:
 😎 Muito fácil
 ```
 
-A resposta será utilizada para determinar o próximo intervalo de revisão.
+Com base nessa resposta, o sistema poderá calcular o próximo intervalo de revisão.
 
 ---
 
-# 🗃️ Banco de dados
+# 🗄️ Banco de dados
 
-O banco de dados utilizado pelo projeto será o **PostgreSQL**.
+O banco de dados será desenvolvido utilizando **PostgreSQL**.
 
 A estrutura inicial será composta pelas seguintes tabelas:
 
-```text
-users
- │
- ├── study_sessions
- │
- └── topics
-        │
-        └── reviews
-```
-
 ## `users`
 
-Armazena os usuários do sistema.
+Responsável pelos usuários da aplicação.
 
 ```text
-id
-name
-email
-password
-created_at
+users
+ ├── id
+ ├── name
+ ├── email
+ ├── password
+ └── created_at
 ```
 
 ## `study_sessions`
 
-Armazena as sessões de estudo.
+Responsável por armazenar as sessões de estudo.
 
 ```text
-id
-user_id
-studied_at
-duration_minutes
-notes
+study_sessions
+ ├── id
+ ├── user_id
+ ├── studied_at
+ ├── duration_minutes
+ └── notes
 ```
 
 ## `topics`
 
-Armazena os conteúdos estudados.
+Responsável pelos conteúdos estudados.
 
 ```text
-id
-user_id
-subject
-name
-description
+topics
+ ├── id
+ ├── user_id
+ ├── subject
+ ├── name
+ └── description
 ```
 
 ## `reviews`
 
-Armazena as revisões dos conteúdos.
+Responsável pelo sistema de repetição espaçada.
 
 ```text
-id
-topic_id
-review_date
-difficulty
-interval_days
-created_at
+reviews
+ ├── id
+ ├── topic_id
+ ├── review_date
+ ├── difficulty
+ ├── interval_days
+ └── created_at
 ```
+
+Futuramente poderão ser adicionadas outras entidades.
 
 ---
 
 # ☕ Tecnologias
 
-## Linguagem
-
-**Java**
-
-A linguagem principal utilizada no desenvolvimento da aplicação.
-
 ## Backend
 
-**Spring Boot**
+* **Java**
+* **Spring Boot**
+* **Spring Data JPA**
+* **Hibernate**
+* **Maven**
+* **Spring Security**
+* **PostgreSQL**
 
-Utilizado para desenvolver a aplicação e disponibilizar a API.
+## Frontend
 
-## Persistência
+* **HTML5**
+* **CSS3**
+* **JavaScript**
 
-**Spring Data JPA / Hibernate**
+## Ferramentas
 
-Responsáveis pela comunicação entre as entidades Java e o banco de dados.
-
-## Banco de dados
-
-**PostgreSQL**
-
-Utilizado para armazenar os usuários, estudos, conteúdos e revisões.
-
-## Gerenciamento de dependências
-
-**Maven**
-
-Utilizado para gerenciamento das dependências e configuração do projeto Java.
-
----
-
-# 🏗️ Arquitetura
-
-O projeto seguirá inicialmente uma arquitetura em camadas:
-
-```text
-                 APPLICATION
-                      │
-                      ▼
-               ┌─────────────┐
-               │ Controller  │
-               └──────┬──────┘
-                      │
-                      ▼
-               ┌─────────────┐
-               │   Service   │
-               └──────┬──────┘
-                      │
-                      ▼
-               ┌─────────────┐
-               │ Repository  │
-               └──────┬──────┘
-                      │
-                      ▼
-               ┌─────────────┐
-               │ PostgreSQL  │
-               └─────────────┘
-```
-
-### Controller
-
-Responsável por receber as requisições HTTP.
-
-### Service
-
-Responsável pelas regras de negócio da aplicação.
-
-### Repository
-
-Responsável pela comunicação com o banco de dados.
-
-### Entity
-
-Representa os dados utilizados pela aplicação.
+* **Git**
+* **GitHub**
+* **Postman**
+* **IntelliJ IDEA / VS Code**
+* **PostgreSQL**
 
 ---
 
 # 📁 Estrutura do projeto
 
+A estrutura inicial do backend seguirá uma arquitetura em camadas:
+
 ```text
-study-tracker/
-│
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com/
-│   │   │       └── studytracker/
-│   │   │           │
-│   │   │           ├── controller/
-│   │   │           │   ├── StudyController.java
-│   │   │           │   ├── TopicController.java
-│   │   │           │   └── ReviewController.java
-│   │   │           │
-│   │   │           ├── service/
-│   │   │           │   ├── StudyService.java
-│   │   │           │   ├── TopicService.java
-│   │   │           │   └── ReviewService.java
-│   │   │           │
-│   │   │           ├── repository/
-│   │   │           │   ├── StudyRepository.java
-│   │   │           │   ├── TopicRepository.java
-│   │   │           │   └── ReviewRepository.java
-│   │   │           │
-│   │   │           ├── entity/
-│   │   │           │   ├── User.java
-│   │   │           │   ├── StudySession.java
-│   │   │           │   ├── Topic.java
-│   │   │           │   └── Review.java
-│   │   │           │
-│   │   │           └── StudyTrackerApplication.java
-│   │   │
-│   │   └── resources/
-│   │       └── application.properties
-│   │
-│   └── test/
-│
-├── pom.xml
-└── README.md
+src/
+└── main/
+    ├── java/
+    │   └── com/
+    │       └── studytracker/
+    │
+    │           ├── controller/
+    │           │   ├── StudyController.java
+    │           │   ├── TopicController.java
+    │           │   └── ReviewController.java
+    │           │
+    │           ├── service/
+    │           │   ├── StudyService.java
+    │           │   ├── TopicService.java
+    │           │   └── ReviewService.java
+    │           │
+    │           ├── repository/
+    │           │   ├── StudyRepository.java
+    │           │   ├── TopicRepository.java
+    │           │   └── ReviewRepository.java
+    │           │
+    │           ├── entity/
+    │           │   ├── User.java
+    │           │   ├── StudySession.java
+    │           │   ├── Topic.java
+    │           │   └── Review.java
+    │           │
+    │           └── StudyTrackerApplication.java
+    │
+    └── resources/
+        └── application.properties
+```
+
+O fluxo principal da aplicação será:
+
+```text
+Controller
+     ↓
+ Service
+     ↓
+Repository
+     ↓
+PostgreSQL
 ```
 
 ---
 
-# 🔌 API
+# 🔌 API REST
 
-A aplicação será construída utilizando uma API REST.
+A comunicação entre frontend e backend será realizada através de uma API REST.
 
 ## Estudos
 
 ```http
-POST /studies
-```
-
-Cria uma nova sessão de estudo.
-
-```http
-GET /studies
-```
-
-Lista os estudos registrados.
-
-```http
-GET /studies/{id}
-```
-
-Busca um estudo específico.
-
-```http
+POST   /studies
+GET    /studies
+GET    /studies/{id}
 DELETE /studies/{id}
 ```
-
-Remove um estudo.
-
----
 
 ## Conteúdos
 
 ```http
-POST /topics
-GET /topics
-GET /topics/{id}
+POST   /topics
+GET    /topics
+GET    /topics/{id}
 DELETE /topics/{id}
 ```
-
----
 
 ## Revisões
 
 ```http
-GET /reviews
-```
-
-Lista as revisões pendentes.
-
-```http
+GET  /reviews
 POST /reviews/{id}/complete
 ```
 
-Registra o resultado de uma revisão e calcula a próxima revisão.
+Os endpoints poderão ser ampliados conforme o desenvolvimento do projeto.
 
 ---
 
-# 🛠️ Configuração
+# 🛣️ Roadmap
 
-## Pré-requisitos
+O projeto será desenvolvido gradualmente, dividindo o desenvolvimento em etapas.
 
-Antes de executar o projeto, é necessário ter instalado:
+## 🟢 Etapa 1 — Configuração do projeto
 
-* Java;
-* Maven;
-* PostgreSQL;
-* Git.
-
----
-
-## Banco de dados
-
-Crie um banco PostgreSQL:
-
-```sql
-CREATE DATABASE study_tracker;
-```
-
-Depois configure a conexão no arquivo:
-
-```text
-src/main/resources/application.properties
-```
-
-Exemplo:
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/study_tracker
-spring.datasource.username=postgres
-spring.datasource.password=sua_senha
-
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-```
-
----
-
-# ▶️ Executando o projeto
-
-Clone o repositório:
-
-```bash
-git clone https://github.com/Marce-Lemos/study-tracker.git
-```
-
-Entre na pasta:
-
-```bash
-cd study-tracker
-```
-
-Execute a aplicação com Maven:
-
-```bash
-./mvnw spring-boot:run
-```
-
-No Windows:
-
-```bash
-mvnw.cmd spring-boot:run
-```
-
----
-
-# 🗺️ Roadmap
-
-O projeto será desenvolvido gradualmente.
-
-## 🟢 Etapa 1 — Configuração
-
+* [ ] Definir ideia do projeto
+* [ ] Definir tecnologias
+* [ ] Definir arquitetura inicial
 * [ ] Criar projeto Spring Boot
 * [ ] Configurar Maven
-* [ ] Configurar PostgreSQL
-* [ ] Conectar Java ao PostgreSQL
-* [ ] Configurar JPA
+* [ ] Configurar `application.properties`
 
-## 🟢 Etapa 2 — Estudos
+---
+
+## 🟢 Etapa 2 — Banco de dados
+
+* [ ] Instalar/configurar PostgreSQL
+* [ ] Criar banco de dados
+* [ ] Configurar conexão Java + PostgreSQL
+* [ ] Adicionar dependências JPA/Hibernate
+* [ ] Criar primeira entidade
+* [ ] Testar persistência dos dados
+
+---
+
+## 🟢 Etapa 3 — Estudos
 
 * [ ] Criar entidade `StudySession`
-* [ ] Criar Repository
-* [ ] Criar Service
-* [ ] Criar Controller
-* [ ] Registrar estudo
+* [ ] Criar relacionamento com usuário
+* [ ] Criar `StudyRepository`
+* [ ] Criar `StudyService`
+* [ ] Criar `StudyController`
+* [ ] Registrar estudos
 * [ ] Listar estudos
+* [ ] Buscar estudo por ID
 * [ ] Excluir estudo
 
-## 🟢 Etapa 3 — Conteúdos
+---
+
+## 🟢 Etapa 4 — Conteúdos
 
 * [ ] Criar entidade `Topic`
 * [ ] Criar relacionamento com usuário
 * [ ] Registrar conteúdos
 * [ ] Adicionar anotações
+* [ ] Registrar dificuldades
+* [ ] Associar conteúdos às sessões de estudo
 
-## 🟢 Etapa 4 — Calendário
+---
+
+## 🟢 Etapa 5 — Calendário
 
 * [ ] Calcular tempo estudado por dia
 * [ ] Criar histórico anual
 * [ ] Criar níveis de intensidade
+* [ ] Criar calendário visual
 * [ ] Exibir calendário de estudos
+* [ ] Calcular sequência de estudos
 
-## 🟢 Etapa 5 — Repetição espaçada
+---
+
+## 🟢 Etapa 6 — Repetição espaçada
 
 * [ ] Criar entidade `Review`
 * [ ] Criar sistema de agendamento
 * [ ] Registrar dificuldade
 * [ ] Calcular próximo intervalo
 * [ ] Listar revisões pendentes
+* [ ] Marcar revisão como concluída
 
-## 🟢 Etapa 6 — Usuários
+---
+
+## 🟢 Etapa 7 — Usuários
 
 * [ ] Criar cadastro
 * [ ] Criar login
 * [ ] Criptografar senhas
 * [ ] Implementar autenticação
 * [ ] Proteger endpoints
-
-## 🔵 Futuro
-
-Após a implementação do MVP, poderão ser adicionadas novas funcionalidades, como:
-
-* Dashboard;
-* Metas de estudo;
-* Estatísticas;
-* Sequência de estudos;
-* Área específica para programação;
-* Projetos de programação;
-* Notificações de revisão.
+* [ ] Associar estudos ao usuário autenticado
 
 ---
 
-# 📚 Objetivo de aprendizado
+## 🟢 Etapa 8 — Dashboard
 
-Além de ser uma aplicação funcional, o **Study Tracker** será utilizado como projeto prático para aprender desenvolvimento em Java.
+* [ ] Criar dashboard
+* [ ] Exibir tempo total estudado
+* [ ] Exibir estudos da semana
+* [ ] Exibir estudos do mês
+* [ ] Exibir sequência atual
+* [ ] Exibir conteúdos mais estudados
+* [ ] Exibir próximas revisões
+* [ ] Adicionar estatísticas
+
+---
+
+# 🔵 Futuro
+
+Após a implementação do MVP, poderão ser adicionadas novas funcionalidades:
+
+* 🏆 Conquistas
+* 🎯 Metas de estudo
+* 🔥 Sequência de estudos
+* 📊 Estatísticas avançadas
+* 📅 Planejamento semanal
+* ⏰ Lembretes
+* 🔔 Notificações de revisão
+* 💻 Área específica para programação
+* 🧩 Exercícios de programação
+* 📂 Projetos de programação
+* ⏱️ Tempo programando
+* 📈 Evolução na programação
+* 🌙 Dark mode
+
+Essas funcionalidades não fazem parte do primeiro MVP e serão consideradas conforme a evolução do projeto.
+
+---
+
+# 🧠 Objetivo de aprendizado
+
+Além de ser uma aplicação funcional, o **Study Tracker** será utilizado como um projeto prático para aprender desenvolvimento em Java.
 
 Durante o desenvolvimento serão estudados conceitos como:
 
 ```text
 Java
   ↓
-POO
+Programação Orientada a Objetos
   ↓
 Maven
   ↓
@@ -564,7 +487,106 @@ Arquitetura em camadas
 Spring Security
 ```
 
-A ideia é desenvolver cada funcionalidade gradualmente, entendendo **por que ela existe e como funciona**, em vez de apenas implementar o código.
+O objetivo não é apenas fazer o sistema funcionar, mas entender **por que cada tecnologia e estrutura está sendo utilizada e como elas se relacionam**.
+
+Cada funcionalidade será desenvolvida gradualmente como um desafio de aprendizado.
+
+---
+
+# 🎯 Primeiro objetivo
+
+O primeiro objetivo do projeto é simples:
+
+> **Registrar que estudei hoje e salvar esse registro no PostgreSQL.**
+
+A partir desse primeiro fluxo, novas funcionalidades serão implementadas uma por uma.
+
+A ideia é evitar construir todo o sistema de uma vez e utilizar cada etapa para aprender novos conceitos de desenvolvimento.
+
+---
+
+# 🚀 Como executar o projeto
+
+## Pré-requisitos
+
+Antes de executar o projeto, será necessário ter instalado:
+
+* Java
+* Maven
+* PostgreSQL
+* Git
+
+---
+
+## 1. Clonar o repositório
+
+```bash
+git clone https://github.com/Marce-Lemos/Study-Tracker.git
+```
+
+Entrar na pasta:
+
+```bash
+cd Study-Tracker
+```
+
+---
+
+## 2. Configurar o PostgreSQL
+
+Criar o banco:
+
+```sql
+CREATE DATABASE study_tracker;
+```
+
+Depois, configurar as informações de conexão no arquivo:
+
+```text
+src/main/resources/application.properties
+```
+
+Exemplo:
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/study_tracker
+spring.datasource.username=postgres
+spring.datasource.password=SUA_SENHA
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
+
+> ⚠️ Não coloque senhas reais no GitHub. Em versões futuras, essas configurações deverão utilizar variáveis de ambiente.
+
+---
+
+## 3. Executar o projeto
+
+### Windows
+
+```bash
+mvnw.cmd spring-boot:run
+```
+
+### Linux/macOS
+
+```bash
+./mvnw spring-boot:run
+```
+
+---
+
+# 🧪 Testes
+
+A API poderá ser testada utilizando ferramentas como:
+
+* Postman
+* Insomnia
+* Navegador
+* Frontend da aplicação
+
+Futuramente serão adicionados testes automatizados para garantir a qualidade e estabilidade do sistema.
 
 ---
 
@@ -572,18 +594,21 @@ A ideia é desenvolver cada funcionalidade gradualmente, entendendo **por que el
 
 🚧 **Em desenvolvimento**
 
-O projeto está atualmente em fase de desenvolvimento e será construído inicialmente como um MVP.
-
-Novas funcionalidades serão adicionadas conforme o projeto evoluir.
+O projeto está atualmente em fase de desenvolvimento e será construído inicialmente como um **MVP**, evoluindo gradualmente conforme novas funcionalidades forem implementadas.
 
 ---
 
 # 👨‍💻 Autor
 
-Desenvolvido por Marcelo Lemos Lopes.
+**Marce-Lemos**
+
+Projeto desenvolvido para estudo, prática e evolução em desenvolvimento de software com Java.
 
 ---
 
-## 📄 Licença
+# 📄 Licença
 
-Este projeto está sob a licença MIT.
+Este projeto está sendo desenvolvido inicialmente para fins de estudo e aprendizado.
+
+Uma licença específica poderá ser adicionada posteriormente conforme a evolução do projeto.
+
