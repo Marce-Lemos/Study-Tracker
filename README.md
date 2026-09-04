@@ -447,7 +447,7 @@ spring.jpa.show-sql=true
 Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/study-tracker.git
+git clone https://github.com/Marce-Lemos/study-tracker.git
 ```
 
 Entre na pasta:
@@ -580,7 +580,7 @@ Novas funcionalidades serão adicionadas conforme o projeto evoluir.
 
 # 👨‍💻 Autor
 
-Desenvolvido por **Seu Nome**.
+Desenvolvido por Marcelo Lemos Lopes.
 
 ---
 
