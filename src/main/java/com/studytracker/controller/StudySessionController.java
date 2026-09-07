@@ -1,8 +1,8 @@
 package com.studytracker.controller;
 
-
 import com.studytracker.entity.StudySession;
 import com.studytracker.repository.StudySessionRepository;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +25,7 @@ public class StudySessionController {
     }
 
     @PostMapping
-    public StudySession saveSession(@RequestBody StudySession session){
+    public StudySession saveSession(@Valid @RequestBody StudySession session){
         return repository.save(session);
     }
 
@@ -47,7 +47,7 @@ public class StudySessionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudySession> updateSession(@PathVariable Long id, @RequestBody StudySession updatedSession) {
+    public ResponseEntity<StudySession> updateSession(@PathVariable Long id, @Valid @RequestBody StudySession updatedSession) {
         Optional<StudySession> oldSession = repository.findById(id);
 
         if (oldSession.isPresent()){
