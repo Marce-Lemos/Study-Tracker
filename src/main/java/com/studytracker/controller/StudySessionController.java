@@ -2,6 +2,7 @@ package com.studytracker.controller;
 
 import com.studytracker.entity.StudySession;
 import com.studytracker.repository.StudySessionRepository;
+import com.studytracker.service.StudySessionService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,25 +15,27 @@ import java.util.Optional;
 public class StudySessionController {
 
     private final StudySessionRepository repository;
+    private final StudySessionService service;
 
-    public StudySessionController(StudySessionRepository repository) {
+    public StudySessionController(StudySessionRepository repository, StudySessionService service) {
         this.repository = repository;
+        this.service = service;
     }
 
     @GetMapping
     public List<StudySession> findAll() {
-        return repository.findAll();
+        return service.findAll();
     }
 
     @PostMapping
     public StudySession saveSession(@Valid @RequestBody StudySession session){
-        return repository.save(session);
+        return service.saveSession(session);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<StudySession> findById(@PathVariable Long id) {
 
-        Optional<StudySession> session = repository.findById(id);
+        Optional<StudySession> session = service.findById(id);
 
         if (session.isPresent()){
             return ResponseEntity.ok(session.get());
@@ -43,29 +46,23 @@ public class StudySessionController {
 
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
-        repository.deleteById(id);
+        service.deleteById(id);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<StudySession> updateSession(@PathVariable Long id,
-                                                      @Valid @RequestBody StudySession updatedSession) {
-        Optional<StudySession> oldSession = repository.findById(id);
+                                                      @Valid
+                                                      @RequestBody StudySession updatedSession) {
+        Optional<StudySession> session = service.updateSession(updatedSession, id);
 
-        if (oldSession.isPresent()){
-            StudySession session = oldSession.get();
+        if (session.isPresent()){
+            StudySession newSession = session.get();
 
-            session.setDurationMinutes(updatedSession.getDurationMinutes());
-            session.setStudiedAt(updatedSession.getStudiedAt());
-            session.setNotes(updatedSession.getNotes());
-
-            repository.save(session);
-
-            return ResponseEntity.ok(session);
+            return ResponseEntity.ok(newSession);
         } else {
+
             return ResponseEntity.notFound().build();
         }
     }
-
-
 
 }
