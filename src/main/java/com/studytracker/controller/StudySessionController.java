@@ -47,7 +47,8 @@ public class StudySessionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudySession> updateSession(@PathVariable Long id, @Valid @RequestBody StudySession updatedSession) {
+    public ResponseEntity<StudySession> updateSession(@PathVariable Long id,
+                                                      @Valid @RequestBody StudySession updatedSession) {
         Optional<StudySession> oldSession = repository.findById(id);
 
         if (oldSession.isPresent()){
