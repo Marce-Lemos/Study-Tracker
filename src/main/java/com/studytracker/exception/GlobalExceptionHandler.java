@@ -12,7 +12,6 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
    public ResponseEntity<Map<String, String>> handleValidationException (MethodArgumentNotValidException ex){
 
@@ -25,6 +24,14 @@ public class GlobalExceptionHandler {
 
             errors.put(field, message);
         }
+
+        return ResponseEntity.badRequest().body(errors);
+   }
+
+   @ExceptionHandler(StudyDurationException.class)
+    public ResponseEntity<Map<String, String>> handleStudyDurationException(StudyDurationException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", ex.getMessage());
 
         return ResponseEntity.badRequest().body(errors);
    }

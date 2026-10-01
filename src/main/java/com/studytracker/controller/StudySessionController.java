@@ -1,6 +1,7 @@
 package com.studytracker.controller;
 
 import com.studytracker.entity.StudySession;
+import com.studytracker.exception.StudyDurationException;
 import com.studytracker.repository.StudySessionRepository;
 import com.studytracker.service.StudySessionService;
 import jakarta.validation.Valid;

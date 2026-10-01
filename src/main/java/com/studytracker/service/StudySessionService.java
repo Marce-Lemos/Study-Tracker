@@ -1,12 +1,9 @@
 package com.studytracker.service;
 
 import com.studytracker.entity.StudySession;
+import com.studytracker.exception.StudyDurationException;
 import com.studytracker.repository.StudySessionRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +21,9 @@ public class StudySessionService {
     }
 
     public StudySession saveSession (StudySession session){
+        if (session.getDurationMinutes() > 720) {
+            throw new StudyDurationException("A duração máxima é de 720 minutos!");
+        }
         return repository.save(session);
     }
 
@@ -41,9 +41,12 @@ public class StudySessionService {
         if (oldSession.isPresent()){
             StudySession session = oldSession.get();
 
+            if (updatedSession.getDurationMinutes() > 720) {
+                throw new StudyDurationException("A duração máxima é de 720 minutos!");
+            }
+            session.setDurationMinutes(updatedSession.getDurationMinutes());
             session.setNotes(updatedSession.getNotes());
             session.setStudiedAt(updatedSession.getStudiedAt());
-            session.setDurationMinutes(updatedSession.getDurationMinutes());
             repository.save(session);
 
             return Optional.of(session);
