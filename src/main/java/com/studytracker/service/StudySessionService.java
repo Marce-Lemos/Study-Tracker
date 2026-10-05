@@ -4,6 +4,9 @@ import com.studytracker.entity.StudySession;
 import com.studytracker.exception.StudyDurationException;
 import com.studytracker.repository.StudySessionRepository;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +56,13 @@ public class StudySessionService {
         } else {
             return Optional.empty();
         }
+    }
+
+    public List<StudySession> findByDate(LocalDate date){
+        LocalDateTime inicio = date.atStartOfDay();
+        LocalDateTime fim = date.plusDays(1).atStartOfDay();
+
+        return repository.findByStudiedAtGreaterThanEqualAndStudiedAtLessThan(inicio, fim);
     }
 
 

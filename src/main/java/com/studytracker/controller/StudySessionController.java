@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,6 +65,13 @@ public class StudySessionController {
 
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/date/{date}")
+    public ResponseEntity<List<StudySession>> findByDate(@PathVariable LocalDate date){
+        List<StudySession> session = service.findByDate(date);
+
+        return ResponseEntity.ok(session);
     }
 
 }
