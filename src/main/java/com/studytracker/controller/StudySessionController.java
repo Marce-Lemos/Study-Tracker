@@ -74,4 +74,11 @@ public class StudySessionController {
         return ResponseEntity.ok(session);
     }
 
+    @GetMapping("/date/{date}/total")
+    public ResponseEntity<Long> getTotalMinutesByDate(@PathVariable LocalDate date){
+        Long total = service.getTotalMinutesByDate(date);
+
+        return ResponseEntity.ok(total);
+    }
+
 }

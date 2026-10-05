@@ -65,5 +65,15 @@ public class StudySessionService {
         return repository.findByStudiedAtGreaterThanEqualAndStudiedAtLessThan(inicio, fim);
     }
 
+    public Long getTotalMinutesByDate(LocalDate date) {
+        LocalDateTime inicio = date.atStartOfDay();
+        LocalDateTime fim = date.plusDays(1).atStartOfDay();
+
+        Long total = repository.sumDurationBetween(inicio, fim);
+        if (total == null){
+            return 0L;
+        }
+        return total;
+    }
 
 }
