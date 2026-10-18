@@ -1,5 +1,6 @@
 package com.studytracker.service;
 
+import com.studytracker.dto.DailyStudySummary;
 import com.studytracker.entity.StudySession;
 import com.studytracker.exception.StudyDurationException;
 import com.studytracker.repository.StudySessionRepository;
@@ -74,6 +75,14 @@ public class StudySessionService {
             return 0L;
         }
         return total;
+    }
+
+    public DailyStudySummary getDailySummary(LocalDate date){
+        List<StudySession> sessions = findByDate(date);
+        Long totalMinutes = getTotalMinutesByDate(date);
+        Integer size = sessions.size();
+
+        return new DailyStudySummary(date, totalMinutes, size);
     }
 
 }

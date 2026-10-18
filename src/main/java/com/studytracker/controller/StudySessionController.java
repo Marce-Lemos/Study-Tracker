@@ -1,7 +1,7 @@
 package com.studytracker.controller;
 
+import com.studytracker.dto.DailyStudySummary;
 import com.studytracker.entity.StudySession;
-import com.studytracker.exception.StudyDurationException;
 import com.studytracker.repository.StudySessionRepository;
 import com.studytracker.service.StudySessionService;
 import jakarta.validation.Valid;
@@ -79,6 +79,13 @@ public class StudySessionController {
         Long total = service.getTotalMinutesByDate(date);
 
         return ResponseEntity.ok(total);
+    }
+
+    @GetMapping("/date/{date}/summary")
+    public ResponseEntity<DailyStudySummary> getDailySummary (@PathVariable LocalDate date) {
+        DailyStudySummary summary = service.getDailySummary(date);
+
+        return ResponseEntity.ok(summary);
     }
 
 }
