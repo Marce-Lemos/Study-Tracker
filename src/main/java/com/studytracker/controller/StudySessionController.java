@@ -1,6 +1,7 @@
 package com.studytracker.controller;
 
 import com.studytracker.dto.DailyStudySummary;
+import com.studytracker.dto.WeeklyStudySummary;
 import com.studytracker.entity.StudySession;
 import com.studytracker.repository.StudySessionRepository;
 import com.studytracker.service.StudySessionService;
@@ -84,6 +85,13 @@ public class StudySessionController {
     @GetMapping("/date/{date}/summary")
     public ResponseEntity<DailyStudySummary> getDailySummary (@PathVariable LocalDate date) {
         DailyStudySummary summary = service.getDailySummary(date);
+
+        return ResponseEntity.ok(summary);
+    }
+
+    @GetMapping("/weekly-summary")
+    public ResponseEntity<WeeklyStudySummary> getWeeklySummary(@RequestParam LocalDate startDate) {
+        WeeklyStudySummary summary = service.getWeeklySummary(startDate);
 
         return ResponseEntity.ok(summary);
     }

@@ -1,11 +1,13 @@
 package com.studytracker.service;
 
 import com.studytracker.dto.DailyStudySummary;
+import com.studytracker.dto.WeeklyStudySummary;
 import com.studytracker.entity.StudySession;
 import com.studytracker.exception.StudyDurationException;
 import com.studytracker.repository.StudySessionRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -83,6 +85,22 @@ public class StudySessionService {
         Integer size = sessions.size();
 
         return new DailyStudySummary(date, totalMinutes, size);
+    }
+
+    public WeeklyStudySummary getWeeklySummary (LocalDate date) {
+        LocalDate beginWeek = date.with(DayOfWeek.MONDAY);
+        LocalDate endWeek = beginWeek.plusDays(6);
+
+        LocalDateTime inicio = beginWeek.atStartOfDay();
+        LocalDateTime fim = endWeek.plusDays(1).atStartOfDay();
+
+        Long total = repository.sumDurationBetween(inicio, fim);
+        if (total == null) total = 0L;
+
+        List<StudySession> sessions = repository.findByStudiedAtGreaterThanEqualAndStudiedAtLessThan(inicio, fim);
+        Integer sizeWeek = sessions.size();
+
+        return new WeeklyStudySummary(beginWeek, endWeek, total, sizeWeek);
     }
 
 }
